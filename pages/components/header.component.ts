@@ -4,6 +4,7 @@ import {LoginPage} from "../login.page.js";
 export class HeaderComponent {
     readonly registerLink: Locator;
     readonly loginLink: Locator;
+    readonly logoutLink: Locator;
 
     private readonly page: Page;
 
@@ -12,6 +13,7 @@ export class HeaderComponent {
 
         this.registerLink = page.getByRole("link", {name: "Register"});
         this.loginLink = page.getByRole("link", {name: "Log in"});
+        this.logoutLink = page.getByRole("link", {name: "Log out"});
     }
 
     async goToLogin(): Promise<LoginPage> {
