@@ -3,10 +3,10 @@ import {mkdir} from "node:fs/promises";
 import {HomePage} from "../pages/home.page.js";
 
 
-const authFile = "./auth/user.json"
+const authFile = ".auth/user.json"
 
 setup("authenticate", async ({page}) => {
-    await mkdir("./auth", {recursive: true});
+    await mkdir(".auth", {recursive: true});
 
     const email = process.env.E2E_EMAIL;
     const password = process.env.E2E_PASSWORD;
