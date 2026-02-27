@@ -16,5 +16,9 @@ export class HomePage extends BasePage {
         this.searchInput = page.getByPlaceholder("Search store");
     }
 
+    async open(): Promise<void> {
+        await super.open();
+        await this.searchInput.waitFor({state: 'visible'});
+    }
 
 }

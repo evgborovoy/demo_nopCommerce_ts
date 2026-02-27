@@ -21,4 +21,8 @@ export class LoginPage extends BasePage {
         await this.passwordInput.fill(password);
         await this.loginButton.click();
     }
+
+    async waitForLoaded(): Promise<void> {
+        await this.emailInput.waitFor({state: 'visible'});
+    }
 }

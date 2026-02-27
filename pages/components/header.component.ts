@@ -22,12 +22,24 @@ export class HeaderComponent {
     }
 
     async goToLogin(): Promise<LoginPage> {
-        await this.loginLink.click();
-        return new LoginPage(this.page)
+        await Promise.all([
+            this.page.waitForURL('**/login**'),
+            this.loginLink.click(),
+        ]);
+
+        const loginPage = new LoginPage(this.page);
+        await loginPage.waitForLoaded();
+        return loginPage;
     }
 
     async goToMyAccount(): Promise<AccountPage> {
-        await this.myAccountLink.click();
-        return new AccountPage(this.page)
+        await Promise.all([
+            this.page.waitForURL('**/customer/info'),
+            this.myAccountLink.click(),
+        ]);
+
+        const accountPage = new AccountPage(this.page);
+        await accountPage.waitForLoaded();
+        return accountPage;
     }
 }
