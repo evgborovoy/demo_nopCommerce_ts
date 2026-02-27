@@ -9,7 +9,7 @@ dotenv.config();
 // import dotenv from 'dotenv';
 // import path from 'path';
 // dotenv.config({ path: path.resolve(__dirname, '.env') });
-const authFile = "./auth/user.json"
+const authFile = ".auth/user.json"
 const isCI = !!process.env.CI;
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -42,37 +42,37 @@ export default defineConfig({
         {
             name: 'chromium',
             use: {...devices['Desktop Chrome']},
-            testIgnore: "/auth\//",
+            testIgnore: ['auth/**'],
         },
 
         {
             name: 'firefox',
             use: {...devices['Desktop Firefox']},
-            testIgnore: "/auth\//",
+            testIgnore: ['auth/**'],
         },
 
         {
             name: 'webkit',
             use: {...devices['Desktop Safari']},
-            testIgnore: "/auth\//",
+            testIgnore: ['auth/**'],
         },
 
         {
             name: 'chromium-auth',
             dependencies: ['setup'],
-            testMatch: /auth\/.*\.spec\.ts/,
+            testMatch: ['auth/**/*.spec.ts'],
             use: {...devices['Desktop Chrome'], storageState: authFile},
         },
         {
             name: 'firefox-auth',
             dependencies: ['setup'],
-            testMatch: /auth\/.*\.spec\.ts/,
+            testMatch: ['auth/**/*.spec.ts'],
             use: {...devices['Desktop Firefox'], storageState: authFile},
         },
         {
             name: 'webkit-auth',
             dependencies: ['setup'],
-            testMatch: /auth\/.*\.spec\.ts/,
+            testMatch: ['auth/**/*.spec.ts'],
             use: {...devices['Desktop Safari'], storageState: authFile},
         },
 
