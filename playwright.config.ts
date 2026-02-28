@@ -1,7 +1,7 @@
 import {defineConfig, devices} from '@playwright/test';
 import * as dotenv from 'dotenv';
 
-dotenv.config({ quiet: true });
+dotenv.config({quiet: true});
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -10,6 +10,7 @@ dotenv.config({ quiet: true });
 // import path from 'path';
 // dotenv.config({ path: path.resolve(__dirname, '.env') });
 const authFile = ".auth/user.json"
+const newUserAuthFile = ".auth/new_user.json"
 const isCI = !!process.env.CI;
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -40,21 +41,26 @@ export default defineConfig({
         },
 
         {
+            name: "setup_new_user",
+            testMatch: /new_user\.setup\.ts/,
+        },
+
+        {
             name: 'chromium',
             use: {...devices['Desktop Chrome']},
-            testIgnore: ['auth/**'],
+            testIgnore: ['auth/**', '**/*.setup.ts'],
         },
 
         {
             name: 'firefox',
             use: {...devices['Desktop Firefox']},
-            testIgnore: ['auth/**'],
+            testIgnore: ['auth/**', '**/*.setup.ts'],
         },
 
         {
             name: 'webkit',
             use: {...devices['Desktop Safari']},
-            testIgnore: ['auth/**'],
+            testIgnore: ['auth/**', '**/*.setup.ts'],
         },
 
         {
@@ -74,6 +80,25 @@ export default defineConfig({
             dependencies: ['setup'],
             testMatch: ['auth/**/*.spec.ts'],
             use: {...devices['Desktop Safari'], storageState: authFile},
+        },
+
+        {
+            name: 'chromium-new-user-auth',
+            dependencies: ['setup_new_user'],
+            testMatch: ['auth/**/*.spec.ts'],
+            use: {...devices['Desktop Chrome'], storageState: newUserAuthFile},
+        },
+        {
+            name: 'firefox-new-user-auth',
+            dependencies: ['setup_new_user'],
+            testMatch: ['auth/**/*.spec.ts'],
+            use: {...devices['Desktop Firefox'], storageState: newUserAuthFile},
+        },
+        {
+            name: 'webkit-new-user-auth',
+            dependencies: ['setup_new_user'],
+            testMatch: ['auth/**/*.spec.ts'],
+            use: {...devices['Desktop Safari'], storageState: newUserAuthFile},
         },
 
         /* Test against mobile viewports. */
