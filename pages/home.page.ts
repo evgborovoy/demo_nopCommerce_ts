@@ -8,12 +8,14 @@ export class HomePage extends BasePage {
 
     readonly header: HeaderComponent
     readonly searchInput: Locator;
+    readonly searchButton: Locator;
 
 
     constructor(page: Page) {
         super(page);
         this.header = new HeaderComponent(page)
         this.searchInput = page.getByPlaceholder("Search store");
+        this.searchButton = page.getByRole("button", {name: "Search"})
     }
 
     async open(): Promise<void> {
