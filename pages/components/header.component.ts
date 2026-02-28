@@ -2,12 +2,14 @@ import type {Page, Locator} from "@playwright/test";
 import {LoginPage} from "../login.page.js";
 import {AccountPage} from "../account.page.js";
 import {RegisterPage} from "../register.page.js";
+import {CartPage} from "../cart.page.js";
 
 export class HeaderComponent {
     readonly registerLink: Locator;
     readonly loginLink: Locator;
     readonly logoutLink: Locator;
     readonly myAccountLink: Locator;
+    readonly cartLink: Locator;
 
     private readonly page: Page;
 
@@ -20,6 +22,7 @@ export class HeaderComponent {
         this.loginLink = header.getByRole("link", {name: "Log in"});
         this.logoutLink = header.getByRole("link", {name: "Log out"});
         this.myAccountLink = header.getByRole("link", {name: "My account"});
+        this.cartLink = header.getByRole('link', {name: "Shopping cart"});
     }
 
     async goToLogin(): Promise<LoginPage> {
@@ -53,5 +56,16 @@ export class HeaderComponent {
         const registerPage = new RegisterPage(this.page);
         await registerPage.waitForLoaded();
         return registerPage;
+    }
+
+    async goToCart(): Promise<CartPage> {
+        await Promise.all([
+            this.page.waitForURL('**/cart'),
+            this.cartLink.click(),
+        ]);
+
+        const cartPage = new CartPage(this.page);
+        await cartPage.waitForLoaded();
+        return cartPage;
     }
 }
