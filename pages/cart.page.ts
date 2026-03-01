@@ -9,23 +9,27 @@ export class CartPage extends BasePage {
 
     readonly cartRows: Locator;
     readonly updateCartButton: Locator;
+    readonly orderSummary: Locator;
+    readonly emptyCartMessage: Locator;
 
     constructor(page: Page) {
         super(page);
 
         this.header = new HeaderComponent(page);
 
-        this.cartRows = page.locator("tr.cart-item-row");
+        this.cartRows = page.locator("//div[contains(@class, 'table-wrapper')]//tbody//tr");
         this.updateCartButton = page.locator("#updatecart");
+        this.orderSummary = page.locator(".order-summary-content");
+        this.emptyCartMessage = page.getByText("Your Shopping Cart is empty!");
     }
 
     async waitForLoaded(): Promise<void> {
-        await this.cartRows.first().waitFor({state: "visible"});
+        await this.orderSummary.waitFor({state: "visible"});
     }
 
     rowByProductName(productName: string): Locator {
         return this.cartRows.filter({
-            has: this.page.getByRole("link", {name: productName}),
+            has: this.page.getByRole("link", { name: productName }),
         });
     }
 
@@ -36,5 +40,9 @@ export class CartPage extends BasePage {
     async setQuantity(productName: string, quantity: number): Promise<void> {
         await this.qtyInput(productName).fill(String(quantity));
         await this.updateCartButton.click();
+    }
+
+    async isEmpty(): Promise<boolean> {
+        return await this.emptyCartMessage.isVisible();
     }
 }

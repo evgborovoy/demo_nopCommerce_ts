@@ -10,6 +10,7 @@ export class HeaderComponent {
     readonly logoutLink: Locator;
     readonly myAccountLink: Locator;
     readonly cartLink: Locator;
+    readonly cartQty: Locator;
 
     private readonly page: Page;
 
@@ -23,6 +24,7 @@ export class HeaderComponent {
         this.logoutLink = header.getByRole("link", {name: "Log out"});
         this.myAccountLink = header.getByRole("link", {name: "My account"});
         this.cartLink = header.getByRole('link', {name: "Shopping cart"});
+        this.cartQty = header.locator('.cart-qty')
     }
 
     async goToLogin(): Promise<LoginPage> {
