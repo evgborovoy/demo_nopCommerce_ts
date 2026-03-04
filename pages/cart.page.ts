@@ -1,6 +1,7 @@
 import type {Page, Locator} from "@playwright/test";
 import {BasePage} from "./base.page.js";
 import {HeaderComponent} from "./components/header.component.js";
+import {expect} from "@playwright/test"
 
 export class CartPage extends BasePage {
     protected readonly path = "/cart";
@@ -37,12 +38,27 @@ export class CartPage extends BasePage {
         return this.rowByProductName(productName).locator("input.qty-input");
     }
 
+    removeCheckbox(productName: string): Locator {
+        return this.rowByProductName(productName).locator("input[name^='removefromcart']");
+    }
+
     async setQuantity(productName: string, quantity: number): Promise<void> {
-        await this.qtyInput(productName).fill(String(quantity));
+        const input = this.qtyInput(productName);
+
+        await input.fill(String(quantity));
         await this.updateCartButton.click();
+
+        await expect(input).toHaveValue(String(quantity));
     }
 
     async isEmpty(): Promise<boolean> {
         return await this.emptyCartMessage.isVisible();
+    }
+
+    async removeItem(productName: string): Promise<void> {
+        await this.removeCheckbox(productName).check();
+        await this.updateCartButton.click();
+
+        await expect(this.rowByProductName(productName)).toHaveCount(0);
     }
 }
