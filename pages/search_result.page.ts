@@ -9,7 +9,6 @@ export class SearchResultPage extends BasePage {
 
     constructor(page: Page) {
         super(page)
-
         this.productLinks = page.locator(".product-item")
     }
 

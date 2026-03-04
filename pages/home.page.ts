@@ -27,10 +27,11 @@ export class HomePage extends BasePage {
 
     async search(text: string): Promise<SearchResultPage> {
         await this.searchInput.fill(text);
-        await this.searchButton.click();
+
 
         await Promise.all([
-            this.page.waitForURL("**/search**")
+            this.page.waitForURL("**/search**"),
+            await this.searchButton.click()
         ])
 
         const searchResult = new SearchResultPage(this.page)

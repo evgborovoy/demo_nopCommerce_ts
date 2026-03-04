@@ -1,7 +1,7 @@
 import type {Page, Locator} from "@playwright/test"
 import {BasePage} from "./base.page.js"
 import {HeaderComponent} from "./components/header.component.js";
-import { expect } from '@playwright/test'
+import {expect} from '@playwright/test'
 
 export class ProductPage extends BasePage {
     protected readonly path = "/"
@@ -24,6 +24,7 @@ export class ProductPage extends BasePage {
 
     async waitForLoaded(): Promise<void> {
         await this.addToCartButton.waitFor({state: "visible"});
+        await this.productTitle.waitFor({state: 'visible'});
     }
 
     async addToCart(): Promise<void> {
@@ -39,10 +40,10 @@ export class ProductPage extends BasePage {
         await Promise.race([
             expect(this.notificationText).toContainText(
                 /has been added to your shopping cart/i,
-                { timeout: 15000 }
+                {timeout: 15000}
             ),
             expect
-                .poll(async () => await this.header.cartQty.innerText(), { timeout: 15000 })
+                .poll(async () => await this.header.cartQty.innerText(), {timeout: 15000})
                 .not.toBe(beforeQty),
         ]);
     }
